@@ -1,7 +1,10 @@
-FROM ttbb/base
+FROM shoothzj/base
 
-RUN curl -OL https://download.konghq.com/gateway-2.x-centos-8/Packages/k/kong-2.8.1.el8.amd64.rpm  && \
-yum install -y kong-2.8.1.el8.amd64.rpm && \
-rm -rf kong-2.8.1.el8.amd64.rpm
+RUN sudo apt-get update && \
+    apt-get install -y apt-transport-https gnupg2 curl lsb-release && \
+    echo "deb [trusted=yes] https://download.konghq.com/gateway-3.x-ubuntu-$(lsb_release -sc)/ default all" | sudo tee /etc/apt/sources.list.d/kong.list && \
+    sudo apt-get update && \
+    sudo apt-get install -y kong=3.1.1 && \
+    sudo apt-get clean all
 
 WORKDIR /usr/local/kong
